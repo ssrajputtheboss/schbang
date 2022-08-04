@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  path: '/feed'
-};
+const initialState = {};
 
 export const updateAsync = createAsyncThunk('registry/update', async () => {});
 

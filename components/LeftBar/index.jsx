@@ -55,11 +55,18 @@ function Navigation({}) {
   );
 }
 
-function NavButton({ key, icon, title, onClick }) {
+function NavButton({ key, icon, title, path, onClick }) {
+  const router = useRouter();
+
   return (
     <Flex
       key={key}
-      border='1px solid #94A1B2'
+      bg={path === router.pathname ? '#4FA2FF' : '#242629'}
+      borderWidth='1px'
+      borderStyle='solid'
+      borderColor='#94A1B2'
+      borderTopRadius={path === '/feed' && '10px'}
+      borderBottomRadius={path === '/rewards' && '10px'}
       p={4}
       alignItems='center'
       color='#FFFFFF'
