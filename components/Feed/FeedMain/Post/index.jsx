@@ -31,7 +31,7 @@ export default function Post({ post }) {
     */
   const textColor = '#FFFFFF';
   return (
-    <Box bg={getPostBgColor(post.type)} p={5} borderRadius='25px' m={1}>
+    <Box bg={getPostBgColor(post.type)} color='#FFFFFF' p={5} borderRadius='25px' m={1}>
       {post.isPinned && (
         <Flex mb={2} alignItems='center'>
           <Icon color='#4FA2FF' as={RiMapPin3Line} mr={2} />
@@ -42,7 +42,7 @@ export default function Post({ post }) {
         <Avatar mr={5} src={post.profileUrl}></Avatar>
         <Flex flexDir='column' justifyContent='space-between' alignItems='start'>
           <Text as='b'>{post.name}</Text>
-          <Text color={textColor}>{post.time}</Text>
+          <Text color={textColor}>{timeToString(post.time)}</Text>
         </Flex>
       </Flex>
       <PostType type={post.type} />
@@ -53,11 +53,11 @@ export default function Post({ post }) {
         <AttachmentView key={index} {...attachment} />
       ))}
       <Flex px={10} py={3} mt={2} justifyContent='space-around'>
-        <LikeButton noOfLikes={post.noOfLikes} />
+        <LikeButton noOfLikes={post.likes?.length} />
         <Divider bg='black' h='40px' orientation='vertical' />
-        <CommentButton noOfComments={post.noOfComments} />
+        <CommentButton noOfComments={post.comments.length} />
         <Divider bg='black' h='40px' orientation='vertical' />
-        <ShareButton noOfShares={post.noOfShares} />
+        <ShareButton />
       </Flex>
     </Box>
   );
@@ -91,7 +91,7 @@ function ShareButton({}) {
 }
 
 function PostType({ type }) {
-  let icon = GrAnnounce;
+  let icon = undefined;
   switch (type) {
     case PostTypes.announcement:
       icon = GrAnnounce;
@@ -100,6 +100,8 @@ function PostType({ type }) {
       icon = GrAnnounce;
       break;
   }
+
+  if (!icon) return <></>;
 
   return (
     <Flex
@@ -150,5 +152,21 @@ function getPostBgColor(type) {
       return '#242629';
     default:
       return '#242629';
+  }
+}
+
+function timeToString(time) {
+  const other = new Date(time);
+  const now = new Date();
+  const dayMins = 24 * 60;
+  const mins = now.getMinutes() - other.getMinutes();
+  if (mins < 60) {
+    return mins + ' minutes ago';
+  } else if (mins < dayMins) {
+    return dayMins + ' hours ago';
+  } else if (mins / dayMins < 30) {
+    return mins / dayMins + ' days ago';
+  } else {
+    return 'Long time ago';
   }
 }

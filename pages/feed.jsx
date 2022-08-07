@@ -11,7 +11,6 @@ export default function FeedPage() {
     if (token) {
       token = JSON.parse(token);
       axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
-      router?.push('/feed');
     } else router.push('/login');
   }, []);
   return (

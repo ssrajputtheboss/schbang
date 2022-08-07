@@ -1,6 +1,6 @@
 import { Box, Text, Flex, IconButton, Divider, Avatar } from '@chakra-ui/react';
 import { useState } from 'react';
-import { BiUpArrow, BiDownArrow } from 'react-icons/bi';
+import { MdKeyboardArrowUp, MdKeyboardArrowDown } from 'react-icons/md';
 export default function FloatingMessageView({}) {
   const [isOpen, setOpen] = useState(false);
   const messageList = [
@@ -26,6 +26,7 @@ export default function FloatingMessageView({}) {
   return (
     <Flex
       w='400px'
+      maxH='400px'
       flexDir='column'
       position='fixed'
       bottom='1'
@@ -45,24 +46,17 @@ export default function FloatingMessageView({}) {
         </Text>
         <IconButton
           bg='transparent'
-          icon={isOpen ? <BiDownArrow /> : <BiUpArrow />}
+          icon={isOpen ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
           onClick={() => setOpen(!isOpen)}></IconButton>
       </Flex>
-      {isOpen &&
-        messageList.map((message, index) => (
-          <MessageView
-            key={index}
-            isLast={messageList.length === 0 || index === messageList.length - 1}
-            {...message}
-          />
-        ))}
+      {isOpen && messageList.map((message, index) => <MessageView key={index} {...message} />)}
     </Flex>
   );
 }
 
-function MessageView({ key, profileURL, name, position, lastMessage, isLast }) {
+function MessageView({ profileURL, name, position, lastMessage }) {
   return (
-    <Flex flexDir='column' key={key} p={4} mb={1} bg='#242629' borderBottomRadius={isLast && '12'}>
+    <Flex flexDir='column' p={4} mb={1} bg='#242629'>
       <Flex alignItems='center'>
         <Avatar src={profileURL} />
         <Flex flexDir='column' ml={2} justifyContent='space-between'>

@@ -3,10 +3,14 @@ import LeftBar from '../LeftBar';
 import TopBar from '../TopBar';
 import FloatingMessageView from '../FloatingMessageView';
 import ToDo from './ToDo';
+import AddToDo from './AddToDo';
 export default function Feed() {
   return (
-    <Flex flexDir='column' height='100%' bg='#16161A'>
+    <Flex flexDir='column' h='100%' minH='100vh' bg='#16161A'>
       <TopBar />
+      <Box position='fixed' left='5' bottom='5'>
+        <AddToDo />
+      </Box>
       <Flex w='100%'>
         <Box w='30%' px={10}>
           <LeftBar />
@@ -15,7 +19,6 @@ export default function Feed() {
           <ToDo />
         </Box>
       </Flex>
-      <FloatingMessageView />
     </Flex>
   );
 }

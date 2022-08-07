@@ -26,3 +26,9 @@ a {
     background: black;
   }
 }
+
+.noScroll::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: 0px;
+  width: 0px;
+}

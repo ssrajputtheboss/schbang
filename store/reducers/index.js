@@ -6,7 +6,8 @@ const initialState = {
   loginLoading: false,
   posts: [],
   messages: [],
-  todos: []
+  todos: [],
+  postFilter: null
 };
 
 export const loginAsync = createAsyncThunk('appState/login', async (data) => {
@@ -37,6 +38,9 @@ export const appStateSlice = createSlice({
     logout: (state) => {},
     changePath: (state, action) => {
       state.path = action.payload;
+    },
+    setFilter: (state, action) => {
+      state.postFilter = action.payload;
     }
   },
 
@@ -64,7 +68,7 @@ export const appStateSlice = createSlice({
   }
 });
 
-export const { logout, changePath } = appStateSlice.actions;
+export const { logout, changePath, setFilter } = appStateSlice.actions;
 
 export const selectAppState = (state) => state.registry;
 

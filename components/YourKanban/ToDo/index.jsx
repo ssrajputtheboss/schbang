@@ -1,5 +1,9 @@
-import { Box, Flex, Text, Divider, Button, Icon } from '@chakra-ui/react';
+import { Box, Flex, Text, Divider, Button, Icon, Heading } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { BiCheckCircle, BiTimer } from 'react-icons/bi';
+import { useStore } from 'react-redux';
+import { getToDosAsync } from '../../../store/reducers';
+import AddToDo from '../AddToDo';
 const ToDoStatus = {
   done: 'Done',
   inProgress: 'In Progress',
@@ -14,38 +18,27 @@ const Flags = {
 };
 
 export default function ToDo() {
-  const todos = [
-    {
-      status: ToDoStatus.inProgress,
-      title: 'Finish the app today by 10 pm',
-      description: 'Finish the app today by 10 pm tonight',
-      dueDate: 'today',
-      flag: Flags.important
-    },
-    {
-      status: ToDoStatus.inProgress,
-      title: 'Finish the app',
-      description: 'Finish the app',
-      dueDate: 'today',
-      flag: Flags.important
-    },
-    {
-      status: ToDoStatus.done,
-      title: 'Finish the app',
-      description: 'Finish the app',
-      dueDate: 'today',
-      flag: Flags.important
-    },
-    {
-      status: ToDoStatus.inReview,
-      title: 'Finish the app',
-      description: 'Finish the app',
-      dueDate: 'today',
-      flag: Flags.important
-    }
-  ];
+  const store = useStore();
+  const [todos, setTodos] = useState(store.getState().appState.todos);
+  store.subscribe(
+    () =>
+      todos.length !== store.getState().appState.todos.length &&
+      setTodos(store.getState().appState.todos)
+  );
+  useEffect(() => {
+    store.dispatch(getToDosAsync());
+  }, []);
+  if (todos.length === 0)
+    return (
+      <Flex flexDir='column' h='100%' justifyContent='center' alignItems='center'>
+        <Heading mb={5} textAlign='center' w='100%'>
+          It{"'"}s Empty For Now!
+        </Heading>
+        <AddToDo />
+      </Flex>
+    );
   return (
-    <Flex alignItems='start' overflow='scroll' color='#FFFFFF'>
+    <Flex alignItems='start' h='100%' overflow='scroll' className='noScroll' color='#FFFFFF'>
       <ToDoList listTitle='To Do' todos={todos} />
       <ToDoList
         listTitle='In Progress'
@@ -75,7 +68,7 @@ function ToDoList({ listTitle, todos }) {
 
 function ToDoItem({ status, title, description, dueDate, flag, key }) {
   return (
-    <Flex flexDir='column' borderRadius={12} bg='#242629' w='250px' key={key} my={5} fontSize='sm'>
+    <Flex flexDir='column' borderRadius={12} bg='#242629' w='300px' key={key} my={5} fontSize='sm'>
       <Box p={2}>
         <Text m={2} fontWeight='medium'>
           {title}
