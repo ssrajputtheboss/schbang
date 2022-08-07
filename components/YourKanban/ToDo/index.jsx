@@ -3,7 +3,8 @@ import { BiCheckCircle, BiTimer } from 'react-icons/bi';
 const ToDoStatus = {
   done: 'Done',
   inProgress: 'In Progress',
-  inReview: 'In Review'
+  inReview: 'In Review',
+  created: 'Created'
 };
 
 const Flags = {

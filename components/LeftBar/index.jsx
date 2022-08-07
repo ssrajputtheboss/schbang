@@ -30,7 +30,7 @@ function Profile({}) {
 
 function Navigation({}) {
   const store = useStore();
-  const path = store.getState().appState.path;
+  //const path = store.getState().appState.path;
   const router = useRouter();
   const dispatch = useDispatch();
   function changePath(newPath) {
@@ -49,18 +49,18 @@ function Navigation({}) {
   return (
     <Flex flexDir='column'>
       {navButtons.map((button, index) => (
-        <NavButton key={index} {...button} onClick={() => changePath(button.path)} />
+        <NavButton key={index} k={index} {...button} onClick={() => changePath(button.path)} />
       ))}
     </Flex>
   );
 }
 
-function NavButton({ key, icon, title, path, onClick }) {
+function NavButton({ k, icon, title, path, onClick }) {
   const router = useRouter();
-
+  console.log('key', k);
   return (
     <Flex
-      key={key}
+      key={k}
       bg={path === router.pathname ? '#4FA2FF' : '#242629'}
       borderWidth='1px'
       borderStyle='solid'

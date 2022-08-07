@@ -48,14 +48,21 @@ export default function FloatingMessageView({}) {
           icon={isOpen ? <BiDownArrow /> : <BiUpArrow />}
           onClick={() => setOpen(!isOpen)}></IconButton>
       </Flex>
-      {isOpen && messageList.map((message, index) => <MessageView key={index} {...message} />)}
+      {isOpen &&
+        messageList.map((message, index) => (
+          <MessageView
+            key={index}
+            isLast={messageList.length === 0 || index === messageList.length - 1}
+            {...message}
+          />
+        ))}
     </Flex>
   );
 }
 
-function MessageView({ key, profileURL, name, position, lastMessage }) {
+function MessageView({ key, profileURL, name, position, lastMessage, isLast }) {
   return (
-    <Flex flexDir='column' key={key} p={4} mb={1} bg='#242629'>
+    <Flex flexDir='column' key={key} p={4} mb={1} bg='#242629' borderBottomRadius={isLast && '12'}>
       <Flex alignItems='center'>
         <Avatar src={profileURL} />
         <Flex flexDir='column' ml={2} justifyContent='space-between'>

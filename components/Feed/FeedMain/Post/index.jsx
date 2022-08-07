@@ -3,6 +3,12 @@ import { RiMapPin3Line } from 'react-icons/ri';
 import { FaHeart, FaComment, FaShare } from 'react-icons/fa';
 import { GrAnnounce, GrAttachment } from 'react-icons/gr';
 const bgColor = '#FDC799';
+export const PostTypes = {
+  announcement: 'Announcement',
+  event: 'Event',
+  promotion: 'Promotion',
+  shoutOut: 'Shout Out'
+};
 export default function Post({ post }) {
   /*
     post = {
@@ -23,9 +29,9 @@ export default function Post({ post }) {
         designation
     }
     */
-  const textColor = '#16161A';
+  const textColor = '#FFFFFF';
   return (
-    <Box bg={bgColor} p={5} borderRadius='25px' m={1}>
+    <Box bg={getPostBgColor(post.type)} p={5} borderRadius='25px' m={1}>
       {post.isPinned && (
         <Flex mb={2} alignItems='center'>
           <Icon color='#4FA2FF' as={RiMapPin3Line} mr={2} />
@@ -85,12 +91,12 @@ function ShareButton({}) {
 }
 
 function PostType({ type }) {
-  let icon = <></>;
+  let icon = GrAnnounce;
   switch (type) {
-    case 'announcement':
+    case PostTypes.announcement:
       icon = GrAnnounce;
       break;
-    case 'event':
+    case PostTypes.event:
       icon = GrAnnounce;
       break;
   }
@@ -104,8 +110,8 @@ function PostType({ type }) {
       width='fit-content'
       alignItems='center'
       justifyContent='center'>
-      <Icon as={icon} color={bgColor} />
-      <Text color={bgColor} ml={2}>
+      <Icon as={icon} color={getPostBgColor(type)} />
+      <Text color={getPostBgColor(type)} ml={2}>
         {type.substring(0, 1).toUpperCase() + type.substring(1)}
       </Text>
     </Flex>
@@ -129,5 +135,20 @@ function AttachmentView({ key, type, metadata }) {
       );
     default:
       return <></>;
+  }
+}
+
+function getPostBgColor(type) {
+  switch (type) {
+    case PostTypes.announcement:
+      return ' #00C39A';
+    case PostTypes.promotion:
+      return '#242629';
+    case PostTypes.event:
+      return '#FDC799';
+    case PostTypes.shoutOut:
+      return '#242629';
+    default:
+      return '#242629';
   }
 }

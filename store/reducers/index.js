@@ -1,8 +1,33 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getMessages, getPosts, getToDos, login } from '../../api/login';
 
-const initialState = {};
+const initialState = {
+  token: null,
+  loginLoading: false,
+  posts: [],
+  messages: [],
+  todos: []
+};
 
-export const updateAsync = createAsyncThunk('registry/update', async () => {});
+export const loginAsync = createAsyncThunk('appState/login', async (data) => {
+  const response = await login(data);
+  return response.data;
+});
+
+export const getPostsAsync = createAsyncThunk('appState/getPosts', async () => {
+  const res = await getPosts();
+  return res.data;
+});
+
+export const getMessagesAsync = createAsyncThunk('appState/getMessages', async () => {
+  const res = await getMessages();
+  return res.data;
+});
+
+export const getToDosAsync = createAsyncThunk('appState/getToDos', async () => {
+  const res = await getToDos();
+  return res.data;
+});
 
 export const appStateSlice = createSlice({
   name: 'appState',
@@ -16,17 +41,25 @@ export const appStateSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(updateAsync.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.rewarded =
-        JSON.parse(user)?.festCoins === action.payload.user?.festCoins ? false : true;
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
+    builder.addCase(loginAsync.fulfilled, (state, action) => {
+      state.token = action.payload.token;
+      state.loginLoading = false;
+      localStorage.setItem('token', JSON.stringify(action.payload.token));
     });
-    builder.addCase(updateAsync.rejected, (state, action) => {
-      if (action.error?.message?.includes('401')) {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-      }
+    builder.addCase(loginAsync.pending, (state, action) => {
+      state.loginLoading = true;
+    });
+    builder.addCase(loginAsync.rejected, (state, action) => {
+      state.loginLoading = false;
+    });
+    builder.addCase(getPostsAsync.fulfilled, (state, action) => {
+      state.posts = action.payload.posts;
+    });
+    builder.addCase(getMessagesAsync.fulfilled, (state, action) => {
+      state.messages = action.payload.messages;
+    });
+    builder.addCase(getToDosAsync.fulfilled, (state, action) => {
+      state.todos = action.payload.todos;
     });
   }
 });

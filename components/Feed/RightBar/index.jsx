@@ -10,17 +10,18 @@ export default function RightBar({}) {
     { icon: <MdAnnouncement color='#94A1B2' />, text: 'Event' }
   ];
   return (
-    <>
+    <Box>
       <Wrap>
         {buttons.map((button, index) => (
           <FilterButton key={index} {...button} />
         ))}
       </Wrap>
-    </>
+      <PinnedMessage />
+    </Box>
   );
 }
 
-function FilterButton({ key, icon, text }) {
+function FilterButton({ icon, text }) {
   return (
     <Flex
       border='3px solid #94A1B2'
@@ -40,9 +41,9 @@ function FilterButton({ key, icon, text }) {
 
 function PinnedMessage({}) {
   return (
-    <Box alignItems='center'>
+    <Flex alignItems='center'>
       <MdAnnouncement />
       <Text ml={2}>Message pinned by admin</Text>
-    </Box>
+    </Flex>
   );
 }

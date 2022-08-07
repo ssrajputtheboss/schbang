@@ -2,12 +2,21 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useStore } from 'react-redux';
 import styles from '../styles/Home.module.css';
+import axios from 'axios';
 
 export default function Home() {
+  console.log('building home page');
   const router = useRouter();
+  const state = useStore().getState().appState;
   useEffect(() => {
-    router?.push('/feed');
+    let token = localStorage.getItem('token');
+    if (token) {
+      token = JSON.parse(token);
+      axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+      router?.push('/feed');
+    } else router.push('/login');
   }, [router]);
   return (
     <div className={styles.container}>
